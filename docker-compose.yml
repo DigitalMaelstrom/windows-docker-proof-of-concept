@@ -1,0 +1,25 @@
+version: "3.7"
+
+networks:
+  windowsdockerpoc:
+    name: windowsdockerpoc
+
+services:
+  apache:
+    networks:
+      windowsdockerpoc:
+        aliases:
+          - apache
+          - windowsdockerpoc_apache
+    container_name: windowsdockerpoc_apache
+    image: windowsdockerpoc_apache:0.1
+    build:
+      dockerfile: ./containers/apache/Dockerfile
+      context: .
+    volumes:
+      - ./files/apache/docker-entrypoint.sh:/usr/local/bin/docker-entrypoint.sh
+      - ./files/apache/testsite.conf:/etc/apache2/sites-available/testsite.conf
+      - ./files/apache/html:/var/www/html
+    restart: always
+    ports:
+      - "8080:80"
